@@ -15,7 +15,8 @@ class JobsController extends Controller
      */
     public function index()
     {
-        return Jobs::all();
+        $jobs = Jobs::with('jobsmodel')->get();
+        return $jobs;
     } 
 
     /**
@@ -36,7 +37,31 @@ class JobsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $fields = $request->validate([
+            'job_title' => 'required|string',
+            'job_description' => 'required|string',
+            'necessary_skills'=> 'required|string',
+            'pictures' => 'required|mimes:jpeg,png',
+        ]);
+        $job= Jobs::create([
+            'job_title' => $fields['job_title'],
+            'job_description' => $fields['job_description'],
+            'necessary_skills' =>$fields['necessary_skills'],
+            'pictures' => $fields['pictures'],
+            'location_id' =>2,
+        ]);
+        // $necessary_skill = Jobs::create([
+            
+        // ]);
+        if($job){
+            return response()->json([
+                'status' => 'success',
+                'data' =>  $job
+            ]);
+        }
+        return response([
+            'message' => 'Created Successful'
+        ], 401);
     }
 
     /**

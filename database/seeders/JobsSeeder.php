@@ -19,6 +19,13 @@ class JobsSeeder extends Seeder
             'necessary_skills' => 'interpersonal skill',
             'pictures' => 'jpg.png',
             'location_id' => 1,
+        ]);  
+        Jobs::create([
+            'job_title' => 'testing Job Two',
+            'job_description' => 'This is testing two job',
+            'necessary_skills' => 'interpersonal skill',
+            'pictures' => 'jpg.png',
+            'location_id' => 1,
         ]);        
     }
 }

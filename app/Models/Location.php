@@ -11,4 +11,8 @@ class Location extends Model
     protected $fillable = [
         'location'
     ];
+    public function locationmodel(){
+        return $this->belongsTo(Jobs::class,'location_id');
+    }
 }
+ 

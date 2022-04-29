@@ -27,6 +27,7 @@ Route::post('/register',[AuthController::class,'register']);
 Route::post('/login/email',[AuthController::class,'loginwithemail']);
 Route::post('/login/phonenumber',[AuthController::class,'loginwithphonenumber']);
 Route::get('/jobs',[JobsController::class,'index']);
+Route::post('/job',[JobsController::class,'store']);
 
 //Protected Routes 
 Route::group(['middleware' => ['auth:sanctum']], function(){

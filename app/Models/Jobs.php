@@ -14,6 +14,11 @@ class Jobs extends Model
         'necessary_skills',
         'pictures',
         'location_id',
-    ];
-        
+    ];    
+    protected $casts = [
+        'necessary_skills' => 'array'
+        ];
+    public function jobsmodel(){
+        return $this->hasMany(Location::class,'id');
+    }
 }
