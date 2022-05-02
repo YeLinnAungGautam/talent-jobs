@@ -45,19 +45,26 @@ class AuthController extends Controller
                 'name' => 'required|string',
                 'email' => 'required|string|unique:users,email',
                 'role' => 'required|string',
+                'nrc'  => 'required|string',
+                'address' => 'required|string',
                 'cv_file' => 'required|mimes:pdf',
                 'profile_picture' => 'required|mimes:jpeg,png',
                 'password' => 'required|string|confirmed',
                 'phonenumber' => 'required',
             ]);
+            // $profile_pictures = $request->file('profile_picture');
+            $profile_pictures = $request->file('profile_picture')->store('public/uploads/profile_pictures');
+            $cv_file = $request->file('cv_file')->store('public/uploads/cv_files');
             $user = User::create([
                 'name' => $fields['name'],
                 'email' => $fields['email'],
                 'phonenumber' => $fields['phonenumber'],
                 'password' => bcrypt($fields['password']),
                 'role' => $fields['role'],
-                'cv_file' => $fields['cv_file'],
-                'profile_picture' => $fields['profile_picture']
+                'nrc' => $fields['nrc'],
+                'address' => $fields['address'],
+                'cv_file' => $cv_file,
+                'profile_picture' => $profile_pictures
             ]);
             $token = $user->createToken('myapptoken')->plainTextToken;
             $response = [
