@@ -6,6 +6,7 @@ use App\Http\Controllers\TestController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\JobsController;
+use App\Http\Controllers\JobCategoryController;
 
 
 /*
@@ -20,14 +21,16 @@ use App\Http\Controllers\JobsController;
 */
 //Public Routes
 Route::get('/test',[TestController::class,'index']);
+//Job Category 
+Route::post('/jobcategory',[JobCategoryController::class,'store']);
+Route::get('/jobcategory',[JobCategoryController::class,'index']);
 
+Route::get('/jobs',[JobsController::class,'index']);
 
 //Authentication
 Route::post('/register',[AuthController::class,'register']);
 Route::post('/login/email',[AuthController::class,'loginwithemail']);
 Route::post('/login/phonenumber',[AuthController::class,'loginwithphonenumber']);
-Route::get('/jobs',[JobsController::class,'index']);
-Route::post('/job',[JobsController::class,'store']);
 
 //Protected Routes 
 Route::group(['middleware' => ['auth:sanctum']], function(){
@@ -44,6 +47,10 @@ Route::group(['middleware' => ['auth:sanctum']], function(){
     Route::get('/blog/show/{id}',[BlogController::class,'show']);
     Route::get('/blog/search/{name}',[BlogController::class,'searchblog']);
     Route::delete('/blogs/{blog}', [BlogController::class, 'destroy']);
+
+    //JOB 
+   
+    Route::post('/job',[JobsController::class,'store']);
 });
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //     return $request->user();

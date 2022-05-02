@@ -20,9 +20,14 @@ class CreateJobsTable extends Migration
             $table->json('necessary_skills');
             $table->string('pictures');
             $table->unsignedBigInteger('location_id');
+            $table->unsignedBigInteger('category_id');
             $table->foreign('location_id')
                   ->references('id')
                   ->on('locations')
+                  ->onDelete('cascade');
+            $table->foreign('category_id')
+                  ->references('id')
+                  ->on('job_categories')
                   ->onDelete('cascade');
             $table->timestamps();
         });

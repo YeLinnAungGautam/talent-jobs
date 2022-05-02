@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Jobs;
-use App\Models\Location;
+use App\Models\JobCategory;
 
-class JobsController extends Controller
+class JobCategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,9 +15,8 @@ class JobsController extends Controller
      */
     public function index()
     {
-        $jobs = Jobs::with('jobsmodel','jobscategoriesmodel')->get();
-        return $jobs;
-    } 
+        return JobCategory::all();
+    }
 
     /**
      * Show the form for creating a new resource.
@@ -38,32 +37,21 @@ class JobsController extends Controller
     public function store(Request $request)
     {
         $fields = $request->validate([
-            'job_title' => 'required|string',
-            'job_description' => 'required|string',
-            'necessary_skills'=> 'required|string',
-            'pictures' => 'required|mimes:jpeg,png',
+            'name' => 'required|string',
         ]);
-        $job= Jobs::create([
-            'job_title' => $fields['job_title'],
-            'job_description' => $fields['job_description'],
-            'necessary_skills' =>$fields['necessary_skills'],
-            'pictures' => $fields['pictures'],
-            'location_id' =>2,
+        $job_category= JobCategory::create([
+            'name' => $fields['name'],
         ]);
-        // $necessary_skill = Jobs::create([
-            
-        // ]);
-        if($job){
+        if($job_category){
             return response()->json([
                 'status' => 'success',
-                'data' =>  $job
+                'data' =>  $job_category    
             ]);
         }
         return response([
             'message' => 'Created Successful'
         ], 401);
     }
-
     /**
      * Display the specified resource.
      *
