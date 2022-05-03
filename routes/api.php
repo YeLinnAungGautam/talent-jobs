@@ -25,7 +25,7 @@ Route::get('/test',[TestController::class,'index']);
 Route::post('/jobcategory',[JobCategoryController::class,'store']);
 Route::get('/jobcategory',[JobCategoryController::class,'index']);
 
-Route::get('/jobs',[JobsController::class,'index']);
+
 
 //Authentication
 Route::post('/register',[AuthController::class,'register']);
@@ -49,7 +49,7 @@ Route::group(['middleware' => ['auth:sanctum']], function(){
     Route::delete('/blogs/{blog}', [BlogController::class, 'destroy']);
 
     //JOB 
-   
+    Route::get('/jobs',[JobsController::class,'index']);
     Route::post('/job',[JobsController::class,'store']);
 });
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
