@@ -14,8 +14,8 @@ class Jobs extends Model
         'necessary_skills',
         'pictures',
         'location_id',
-        'category_id',
-    ];    
+        'category_id'
+    ];     
     protected $casts = [
         'necessary_skills' => 'array'
         ];

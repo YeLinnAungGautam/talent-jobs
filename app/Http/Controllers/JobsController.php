@@ -40,19 +40,18 @@ class JobsController extends Controller
         $fields = $request->validate([
             'job_title' => 'required|string',
             'job_description' => 'required|string',
-            'necessary_skills'=> 'required|string',
+            'necessary_skills'=> 'required',
             'pictures' => 'required|mimes:jpeg,png',
         ]);
+        $job_pictures = $request->file('pictures')->store('public/uploads/job_pictures');
         $job= Jobs::create([
             'job_title' => $fields['job_title'],
             'job_description' => $fields['job_description'],
             'necessary_skills' =>$fields['necessary_skills'],
-            'pictures' => $fields['pictures'],
+            'pictures' => $job_pictures,
             'location_id' =>2,
+            'category_id' =>1,
         ]);
-        // $necessary_skill = Jobs::create([
-            
-        // ]);
         if($job){
             return response()->json([
                 'status' => 'success',
