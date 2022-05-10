@@ -17,7 +17,6 @@ class JobsSeeder extends Seeder
             'job_title' => 'testing One Job',
             'job_description' => 'This is testing one job',
             'necessary_skills' => 'interpersonal skill',
-            'pictures' => 'jpg.png',
             'location_id' => 1,
             'category_id' => 1
         ]);  
@@ -25,9 +24,8 @@ class JobsSeeder extends Seeder
             'job_title' => 'testing Job Two',
             'job_description' => 'This is testing two job',
             'necessary_skills' => 'interpersonal skill',
-            'pictures' => 'jpg.png',
-            'location_id' => 1,
-            'category_id' => 1
+            'location_id' => 2,
+            'category_id' => 2
         ]);        
     }
 }

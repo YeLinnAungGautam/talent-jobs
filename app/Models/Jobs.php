@@ -12,7 +12,6 @@ class Jobs extends Model
         'job_title',
         'job_description',
         'necessary_skills',
-        'pictures',
         'location_id',
         'category_id'
     ];     

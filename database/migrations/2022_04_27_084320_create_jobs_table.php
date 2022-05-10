@@ -18,7 +18,6 @@ class CreateJobsTable extends Migration
             $table->string('job_title');
             $table->string('job_description');
             $table->json('necessary_skills'); 
-            $table->string('pictures');
             $table->unsignedBigInteger('location_id');
             $table->unsignedBigInteger('category_id');
             $table->foreign('location_id')

@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Jobs;
 use App\Models\Location;
+use App\Models\JobCategory;
+use DB;
 
 class JobsController extends Controller
 {
@@ -15,7 +17,11 @@ class JobsController extends Controller
      */
     public function index()
     {
-        $jobs = Jobs::with('jobsmodel','jobscategoriesmodel')->get();
+       $jobs = DB::table('jobs')
+               ->join('locations','jobs.location_id','=','locations.id')
+               ->select('jobs.*','locations.location')
+               ->get();
+        // $jobs = Jobs::with('jobsmodel')->get();
         return $jobs;
     } 
 
@@ -41,16 +47,16 @@ class JobsController extends Controller
             'job_title' => 'required|string',
             'job_description' => 'required|string',
             'necessary_skills'=> 'required',
-            'pictures' => 'required|mimes:jpeg,png',
         ]);
-        $job_pictures = $request->file('pictures')->store('public/uploads/job_pictures');
+        $location_id = Location::findOrfail($request->location_id);
+        $category_id = JobCategory::findOrfail($request->category_id);
+        
         $job= Jobs::create([
             'job_title' => $fields['job_title'],
             'job_description' => $fields['job_description'],
             'necessary_skills' =>$fields['necessary_skills'],
-            'pictures' => $job_pictures,
-            'location_id' =>2,
-            'category_id' =>1,
+            'location_id' =>$location_id->id,
+            'category_id' =>$category_id->id,
         ]);
         if($job){
             return response()->json([
@@ -60,7 +66,7 @@ class JobsController extends Controller
         }
         return response([
             'message' => 'Created Successful'
-        ], 401);
+        ], 201);
     }
 
     /**
