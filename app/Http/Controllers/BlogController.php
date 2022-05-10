@@ -39,11 +39,16 @@ class BlogController extends Controller
             'description' => 'required|string',
             'image' => 'required|mimes:jpeg,png',
         ]);
+        // $blogs_pictures = $request->file('image')->store('public/uploads/blog_pictures');
         $blogs_pictures = $request->file('image')->store('public/uploads/blog_pictures');
+        $destinationPath = public_path().'/blog_images';
+        $request->file = $request->file('image')->getClientOriginalName();
+        $fileName = $request->file('image')->getClientOriginalName(); 
+        $request->file('image')->move($destinationPath,$fileName);
         $blog= Blog::create([
             'title' => $fields['title'],
             'description' => $fields['description'],
-            'image' => $blogs_pictures
+            'image' => $fileName
         ]);
         return response([
             'message' => 'Created Successful'

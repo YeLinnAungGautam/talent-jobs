@@ -19,9 +19,9 @@ class JobsController extends Controller
     {
        $jobs = DB::table('jobs')
                ->join('locations','jobs.location_id','=','locations.id')
-               ->select('jobs.*','locations.location')
+               ->join('job_categories','jobs.category_id','=','job_categories.id')
+            // ->select('jobs.*','locations.location')
                ->get();
-        // $jobs = Jobs::with('jobsmodel')->get();
         return $jobs;
     } 
 
