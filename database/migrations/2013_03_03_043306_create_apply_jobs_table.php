@@ -16,13 +16,15 @@ class CreateApplyJobsTable extends Migration
         Schema::create('apply_jobs', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('job_id');
             $table->foreign('user_id')
                   ->references('id')
-                  ->on('users');
+                  ->on('users')
+                  ->onDelete('cascade');
+                  $table->unsignedBigInteger('job_id');
             $table->foreign('job_id')
                   ->references('id')
-                  ->on('jobs');
+                  ->on('jobs')
+                  ->onDelete('cascade');
             $table->timestamps();
         });
     }

@@ -28,4 +28,7 @@ class Jobs extends Model
     public function jobscategoriesmodel(){
         return $this->hasMany(JobCategory::class,'id');
     }
+    public function ApplyJobListModel(){
+        return $this->hasMany(Jobs::class,'id');
+    }
 }

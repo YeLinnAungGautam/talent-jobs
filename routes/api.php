@@ -7,6 +7,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\JobsController;
 use App\Http\Controllers\JobCategoryController;
+use App\Http\Controllers\ApplyJobController;
 
 
 /*
@@ -55,6 +56,7 @@ Route::group(['middleware' => ['auth:sanctum']], function(){
 
     // Job Apply
     Route::post('/jobapply/{userid}/{jobid}',[ApplyJobController::class,'store']);
+    Route::get('/jobapply',[ApplyJobController::class,'index']);
 });
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //     return $request->user();

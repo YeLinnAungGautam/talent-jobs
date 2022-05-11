@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Jobs;
+use App\Models\User;
+use App\Models\ApplyJob;
 
 class ApplyJobController extends Controller
 {
@@ -32,9 +35,19 @@ class ApplyJobController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store($userid,$jobid)
     {
-        //
+        $user_id = User::findOrfail($userid);
+        $job_list = Jobs::findorfail($jobid);
+        $applyjob= ApplyJob::create([
+            'user_id' => $user_id->id,
+            'job_id' => $job_list->id,
+        ]);
+        if($applyjob){
+            return response()->json([
+                'status' => 'success',
+            ]);
+        }
     }
 
     /**
