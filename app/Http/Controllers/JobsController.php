@@ -46,7 +46,11 @@ class JobsController extends Controller
         $fields = $request->validate([
             'job_title' => 'required|string',
             'job_description' => 'required|string',
-            'necessary_skills'=> 'required',
+            'qualification'=> 'required',
+            'salary' => 'required|string',
+            'township' => 'required|string',
+            'experiences' => 'required|string',
+            'responsibilities' => 'required|string'
         ]);
         $location_id = Location::findOrfail($request->location_id);
         $category_id = JobCategory::findOrfail($request->category_id);
@@ -54,9 +58,13 @@ class JobsController extends Controller
         $job= Jobs::create([
             'job_title' => $fields['job_title'],
             'job_description' => $fields['job_description'],
-            'necessary_skills' =>$fields['necessary_skills'],
+            'qualification' =>$fields['qualification'],
             'location_id' =>$location_id->id,
             'category_id' =>$category_id->id,
+            'salary' => $fields['salary'],
+            'township' => $fields['township'],
+            'experiences' => $fields['experiences'],
+            'responsibilities' => $fields['responsibilities']
         ]);
         if($job){
             return response()->json([
@@ -111,6 +119,21 @@ class JobsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $success = Jobs::find($id);
+        $success->delete();
+        return [
+            'success' => 'Deleted Successful'
+        ];
+    }
+    public function searchjobs($name){
+        // $search_key_word = preg_replace('/\s+/', '', $name);
+        $jobs = Jobs::where('job_title','like','%'.$name.'%')
+                ->orWhere('job_description','like','%'.$name.'%')
+                ->orWhere('location','like','%'.$name.'%')
+                ->orWhere('name','like','%'.$name.'%')
+                ->join('locations','jobs.location_id','=','locations.id')
+                ->join('job_categories','jobs.category_id','=','job_categories.id')
+                ->paginate(6);
+        return $jobs;
     }
 }

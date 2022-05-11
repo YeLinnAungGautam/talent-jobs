@@ -11,13 +11,17 @@ class Jobs extends Model
     protected $fillable = [
         'job_title',
         'job_description',
-        'necessary_skills',
+        'qualification',
         'location_id',
-        'category_id'
+        'category_id',
+        'salary',
+        'township',
+        'experiences',
+        'responsibilities'
     ];     
-    protected $casts = [
-        'necessary_skills' => 'array'
-        ];
+    // protected $casts = [
+    //     'necessary_skills' => 'array'
+    //     ];
     public function jobsmodel(){
         return $this->hasMany(Location::class,'id');
     }

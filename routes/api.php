@@ -21,11 +21,6 @@ use App\Http\Controllers\JobCategoryController;
 */
 //Public Routes
 Route::get('/test',[TestController::class,'index']);
-//Job Category 
-Route::post('/jobcategory',[JobCategoryController::class,'store']);
-Route::get('/jobcategory',[JobCategoryController::class,'index']);
-
-
 
 //Authentication
 Route::post('/register',[AuthController::class,'register']);
@@ -48,9 +43,18 @@ Route::group(['middleware' => ['auth:sanctum']], function(){
     Route::get('/blog/search/{name}',[BlogController::class,'searchblog']);
     Route::delete('/blogs/{blog}', [BlogController::class, 'destroy']);
 
+    //Job Category 
+    Route::post('/jobcategory',[JobCategoryController::class,'store']);
+    Route::get('/jobcategory',[JobCategoryController::class,'index']);
+
     //JOB 
     Route::get('/jobs',[JobsController::class,'index']);
     Route::post('/job',[JobsController::class,'store']);
+    Route::get('/job/search/{name}',[JobsController::class,'searchjobs']);
+    Route::delete('/job/delete/{id}',[JobsController::class,'destroy']);
+
+    // Job Apply
+    Route::post('/jobapply/{userid}/{jobid}',[ApplyJobController::class,'store']);
 });
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //     return $request->user();
