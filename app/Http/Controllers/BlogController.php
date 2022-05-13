@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Blog;
+use Illuminate\Support\Facades\Storage;
 class BlogController extends Controller
 {
     /**
@@ -39,10 +40,15 @@ class BlogController extends Controller
             'description' => 'required|string',
             'image' => 'required|mimes:jpeg,png',
         ]);
+        // $blogs_pictures = $request->file('image')->store('public/uploads/blog_pictures');
+        $destinationPath = public_path().'/blog_images';
+        $request->file = $request->file('image')->getClientOriginalName();
+        $fileName = $request->file('image')->getClientOriginalName(); 
+        $request->file('image')->move($destinationPath,$fileName);
         $blog= Blog::create([
             'title' => $fields['title'],
             'description' => $fields['description'],
-            'image' => $fields['image']
+            'image' => $fileName
         ]);
         return response([
             'message' => 'Created Successful'
@@ -117,6 +123,7 @@ class BlogController extends Controller
      */
     public function searchblog($name){
             $blog = Blog::where('title','like','%'.$name.'%')->orWhere('description','like','%'.$name.'%')->paginate(6);
+
             return $blog;
-    }
+    } 
 }

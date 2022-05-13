@@ -27,7 +27,7 @@ class locationsSeeder extends Seeder
             'location' => 'Taunggyi',
         ]);
         Location::create([
-            'location' => 'Taunggyi',
+            'location' => 'Pyin Oo Lwin',
         ]);
     }
 }

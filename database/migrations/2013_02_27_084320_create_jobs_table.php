@@ -17,11 +17,22 @@ class CreateJobsTable extends Migration
             $table->id();
             $table->string('job_title');
             $table->string('job_description');
-            $table->string('necessary_skills');
-            $table->string('pictures');
+            $table->string('qualification'); 
             $table->unsignedBigInteger('location_id');
-            $table->foreign('location_id')->references('id')->on('locations')->onDelete('cascade');
-            $table->timestamps();
+            $table->unsignedBigInteger('category_id');
+            $table->foreign('location_id')
+                  ->references('id')
+                  ->on('locations')
+                  ->onDelete('cascade');
+            $table->foreign('category_id')
+                  ->references('id')
+                  ->on('job_categories')
+                  ->onDelete('cascade');
+            $table->string('salary');
+            $table->string('township');
+            $table->string('experiences');
+            $table->string('responsibilities');
+            $table->timestamps(); 
         });
     }
     /**

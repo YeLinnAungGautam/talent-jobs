@@ -5,14 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Location extends Model
+class JobCategory extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'location'
+        'name'
     ];
-    public function locationmodel(){
-        return $this->belongsTo(Jobs::class,'location_id');
+    public function jobcategories(){
+        return $this->belongsTo(Jobs::class,'category_id');
     }
 }
- 
