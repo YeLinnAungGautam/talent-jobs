@@ -86,7 +86,11 @@ class JobsController extends Controller
      */
     public function show($id)
     {
-        //
+        $jobs = Jobs::find($id)
+                ->join('locations','jobs.location_id','=','locations.id')
+                ->select('jobs.*','locations.location')
+                ->get();
+        return $jobs;
     }
 
     /**
@@ -107,9 +111,34 @@ class JobsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update($id, Request $request)
     {
-        //
+        $fields = $request->validate([
+            'job_title' => 'required|string',
+            'job_description' => 'required|string',
+            'qualification'=> 'required',
+            'salary' => 'required|string',
+            'township' => 'required|string',
+            'experiences' => 'required|string',
+            'responsibilities' => 'required|string',
+            'location_id' => 'required',
+            'category_id' => 'required'
+        ]);
+        $job_update = Jobs::find($id);
+        $job_update->update([
+            'job_title' => $fields['job_title'],
+            'job_description' => $fields['job_description'],
+            'qualification' =>$fields['qualification'],
+            'location_id' =>$fields['location_id'],
+            'category_id' =>$fields['category_id'],
+            'salary' => $fields['salary'],
+            'township' => $fields['township'],
+            'experiences' => $fields['experiences'],
+            'responsibilities' => $fields['responsibilities']
+        ]);
+        return response([
+            'message' => 'Update Successfully'
+        ], 200);
     }
 
     /**
@@ -134,6 +163,7 @@ class JobsController extends Controller
                 ->orWhere('name','like','%'.$name.'%')
                 ->join('locations','jobs.location_id','=','locations.id')
                 ->join('job_categories','jobs.category_id','=','job_categories.id')
+                ->select('jobs.*','locations.location','jobs.*','job_categories.name')
                 ->paginate(6);
         return $jobs;
     }

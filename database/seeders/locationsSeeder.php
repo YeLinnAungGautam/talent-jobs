@@ -15,19 +15,46 @@ class locationsSeeder extends Seeder
     public function run()
     {
         Location::create([
-            'location' => 'Yangon',
+            'location' => 'Ayeyarwady',
+        ]);
+        Location::create([
+            'location' => 'Bago',
+        ]);
+        Location::create([
+            'location' => 'Magway',
         ]);
         Location::create([
             'location' => 'Mandalay',
         ]);
         Location::create([
-            'location' => 'Nay Pyi Taw',
+            'location' => 'Sagaing',
         ]);
         Location::create([
-            'location' => 'Taunggyi',
+            'location' => 'Tanintharyi',
         ]);
         Location::create([
-            'location' => 'Pyin Oo Lwin',
+            'location' => 'Yangon',
+        ]);
+        Location::create([
+            'location' => 'Chin State',
+        ]);
+        Location::create([
+            'location' => 'Kachin State',
+        ]);
+        Location::create([
+            'location' => 'Kayin',
+        ]);
+        Location::create([
+            'location' => 'Kayah',
+        ]);
+        Location::create([
+            'location' => 'Mon',
+        ]);
+        Location::create([
+            'location' => 'Rakhine',
+        ]);
+        Location::create([
+            'location' => 'Shan',
         ]);
     }
 }

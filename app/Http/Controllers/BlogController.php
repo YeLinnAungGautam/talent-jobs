@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Blog;
+use File;
 use Illuminate\Support\Facades\Storage;
 class BlogController extends Controller
 {
@@ -85,23 +86,43 @@ class BlogController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $blog)
+    public function update($id, Request $request)
     {
-        $blog = Blog::find($blog);
-        $blog->title = $request->title;
-        $blog->description = $request->description;
-        // $blog->image = $request->image;
-        $blog->save();
-        // $success = $blog->update([
-        //     'title' => request('title'),
-        //     'description'=> request('description'),
-        //     'image' => request('image'),
-        // ]);
-        return [
-            'success' => $blog,
-        ];
+        $fields = $request->validate([
+            'title' => 'required|string',
+            'description' => 'required|string',
+            'image' => 'nullable|mimes:jpeg,png',
+        ]);
+            $blog_update = Blog::find($id);
+            if($blog_update){
+                if($request->hasFile('image') != null){
+                    $image_name = time().'.'.$request->image->extension();
+                    $request->image->move(public_path('/blog_images'),$image_name);
+                    $old_path = public_path().'/blog_images'.$blog_update->image;
+                        if(File::exists($old_path)){
+                            File::delete($old_path);
+                             $blog_update->update([
+                                'title' => $request->title,
+                                'description' => $request->description,
+                                'image' => $image_name
+                                ]);
+                        }
+                        else{
+                            $blog_update->update([
+                                'title' => $request->title,
+                                'description' => $request->description,
+                                'image' => $image_name
+                                ]);
+                        }
+                }
+                else{
+                    $blog_update->update([
+                        'title' => $request->title,
+                        'description' => $request->description,
+                        ]);
+                }
+            }
     }
-
     /**
      * Remove the specified resource from storage.
      *
@@ -113,7 +134,7 @@ class BlogController extends Controller
         $success = $blog->delete();
         return [
             'success' => $success
-        ];
+        ]; 
     }
     /**
      * Search For a name.

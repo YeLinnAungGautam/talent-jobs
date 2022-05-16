@@ -39,7 +39,7 @@ Route::group(['middleware' => ['auth:sanctum']], function(){
     //Blog
     Route::get('/blog', [BlogController::class, 'index']);
     Route::post('/blog',[BlogController::class,'store']);
-    Route::put('/blogs/update/{blog}', [BlogController::class, 'update']);
+    Route::put('/blogs/update/{id}', [BlogController::class, 'update']);
     Route::get('/blog/show/{id}',[BlogController::class,'show']);
     Route::get('/blog/search/{name}',[BlogController::class,'searchblog']);
     Route::delete('/blogs/{blog}', [BlogController::class, 'destroy']);
@@ -53,6 +53,8 @@ Route::group(['middleware' => ['auth:sanctum']], function(){
     Route::post('/job',[JobsController::class,'store']);
     Route::get('/job/search/{name}',[JobsController::class,'searchjobs']);
     Route::delete('/job/delete/{id}',[JobsController::class,'destroy']);
+    Route::get('/job/show/{id}',[JobsController::class,'show']);
+    Route::put('jobs/update/{id}',[JobsController::class,'update']);
 
     // Job Apply
     Route::post('/jobapply/{userid}/{jobid}',[ApplyJobController::class,'store']);
