@@ -41,6 +41,8 @@ class AuthController extends Controller
     }
 
     public function register(Request $request){
+        global $fileName;
+        global $fileName_forcv;
             $fields = $request->validate([
                 'name' => 'required|string',
                 'email' => 'required|string|unique:users,email',
@@ -53,17 +55,27 @@ class AuthController extends Controller
                 'phonenumber' => 'required',
             ]);
             // $profile_pictures = $request->file('profile_picture');
-            $profile_pictures = $request->file('profile_picture')->store('public/uploads/profile_pictures');
+            // $profile_pictures = $request->file('profile_picture')->store('public/uploads/profile_pictures');
             //For Profile Pictures
-            $destinationPath = public_path().'/profile_images';
-            $request->file = $request->file('image')->getClientOriginalName();
-            $fileName = $request->file('image')->getClientOriginalName(); 
-            $request->file('image')->move($destinationPath,$fileName);
+            if($request->hasFile('cv_file') == null){
+                $fileName = '-';
+            }
+            else{
+                $destinationPath = public_path().'/profile_images';
+                $request->file = $request->file('cv_file')->getClientOriginalName();
+                $fileName = $request->file('cv_file')->getClientOriginalName(); 
+                $request->file('cv_file')->move($destinationPath,$fileName);
+            }
+            if($request->hasFile('profile_picture') == null){
+                $fileName_forcv = '-';
+            }
+            else{
             //For CV Files
             $destinationPath_forcv = public_path().'/profile_images';
-            $request->file = $request->file('image')->getClientOriginalName();
-            $fileName_forcv = $request->file('image')->getClientOriginalName(); 
-            $request->file('image')->move($destinationPath_forcv,$fileName_forcv);
+            $request->file = $request->file('profile_picture')->getClientOriginalName();
+            $fileName_forcv = $request->file('profile_picture')->getClientOriginalName(); 
+            $request->file('profile_picture')->move($destinationPath_forcv,$fileName_forcv);
+        }
             // $cv_file = $request->file('cv_file')->store('public/uploads/cv_files');
             $user = User::create([
                 'name' => $fields['name'],
