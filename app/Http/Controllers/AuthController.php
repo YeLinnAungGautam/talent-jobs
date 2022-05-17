@@ -41,20 +41,42 @@ class AuthController extends Controller
     }
 
     public function register(Request $request){
+        global $fileName;
+        global $fileName_forcv;
             $fields = $request->validate([
                 'name' => 'required|string',
                 'email' => 'required|string|unique:users,email',
                 'role' => 'required|string',
                 'nrc'  => 'required|string',
                 'address' => 'required|string',
-                'cv_file' => 'required|mimes:pdf',
-                'profile_picture' => 'required|mimes:jpeg,png',
+                'cv_file' => 'nullable|mimes:pdf',
+                'profile_picture' => 'nullable|mimes:jpeg,png',
                 'password' => 'required|string|confirmed',
                 'phonenumber' => 'required',
             ]);
             // $profile_pictures = $request->file('profile_picture');
-            $profile_pictures = $request->file('profile_picture')->store('public/uploads/profile_pictures');
-            $cv_file = $request->file('cv_file')->store('public/uploads/cv_files');
+            // $profile_pictures = $request->file('profile_picture')->store('public/uploads/profile_pictures');
+            //For Profile Pictures
+            if($request->hasFile('cv_file') == null){
+                $fileName = '-';
+            }
+            else{
+                $destinationPath = public_path().'/profile_images';
+                $request->file = $request->file('cv_file')->getClientOriginalName();
+                $fileName = $request->file('cv_file')->getClientOriginalName(); 
+                $request->file('cv_file')->move($destinationPath,$fileName);
+            }
+            if($request->hasFile('profile_picture') == null){
+                $fileName_forcv = '-';
+            }
+            else{
+            //For CV Files
+            $destinationPath_forcv = public_path().'/profile_images';
+            $request->file = $request->file('profile_picture')->getClientOriginalName();
+            $fileName_forcv = $request->file('profile_picture')->getClientOriginalName(); 
+            $request->file('profile_picture')->move($destinationPath_forcv,$fileName_forcv);
+        }
+            // $cv_file = $request->file('cv_file')->store('public/uploads/cv_files');
             $user = User::create([
                 'name' => $fields['name'],
                 'email' => $fields['email'],
@@ -63,8 +85,8 @@ class AuthController extends Controller
                 'role' => $fields['role'],
                 'nrc' => $fields['nrc'],
                 'address' => $fields['address'],
-                'cv_file' => $cv_file,
-                'profile_picture' => $profile_pictures
+                'cv_file' => $fileName,
+                'profile_picture' => $fileName_forcv
             ]);
             $token = $user->createToken('myapptoken')->plainTextToken;
             $response = [
