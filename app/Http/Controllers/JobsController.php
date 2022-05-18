@@ -84,13 +84,26 @@ class JobsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id) 
     {
-        $jobs = Jobs::find($id)
-                ->join('locations','jobs.location_id','=','locations.id')
-                ->select('jobs.*','locations.location')
-                ->get();
-        return $jobs;
+        // $jobs = Jobs::find($id)
+        //            ->join('locations','jobs.location_id','=','locations.id')
+        //            ->join('job_categories','jobs.category_id','=','job_categories.id')
+        //         //    ->select('jobs.*','locations.location','jobs.*','job_categories.name')
+        //             ->select('locations.location','job_categories.name')
+        //            ->get();
+        // $jobs = Jobs::find($id);
+        $jobs_retreive = Jobs::where('id','=',$id)->pluck('job_title','location_id');
+        $jobsss = $jobs_retreive
+                  ->join('locations','jobs.location_id','=','locations.id')
+                  ->select('jobs.*','locations.location')
+                        ->get();
+                        // ->join('locations','jobs.location_id','=','locations.id')
+                        // ->join('job_categories','jobs.category_id','=','job_categories.id')
+                        // ->select('jobs.*','locations.location','jobs.*','job_categories.name')
+                      
+                        ;
+            return $jobsss;
     }
 
     /**

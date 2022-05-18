@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Models\User;
+use Auth;
 use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
@@ -171,9 +172,55 @@ class AuthController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update($id, Request $request)
     {
-        //
+        // $user_id = User::findorFail($id);
+        $fields = $request->validate([
+            'name' => 'required|string',
+            'email' => 'required|email|unique:users,email',
+            'role' => 'required|string',
+            'nrc'  => 'required|string',
+            'address' => 'required|string',
+            'cv_file' => 'nullable|mimes:pdf',
+            'profile_picture' => 'nullable|mimes:jpeg,png',
+            'password' => 'required|string|confirmed',
+            'phonenumber' => 'required',
+        ]);
+        $user_update = User::find($id);
+        if($request->hasFile('cv_file') == null){
+            $fileName = '-';
+        }
+        else{
+            $destinationPath = public_path().'/profile_images';
+            $request->file = $request->file('cv_file')->getClientOriginalName();
+            $fileName = $request->file('cv_file')->getClientOriginalName(); 
+            $request->file('cv_file')->move($destinationPath,$fileName);
+        }
+        if($request->hasFile('profile_picture') == null){
+            $fileName_forcv = '-';
+        }
+        else{
+        //For CV Files
+        $destinationPath_forcv = public_path().'/profile_images';
+        $request->file = $request->file('profile_picture')->getClientOriginalName();
+        $fileName_forcv = $request->file('profile_picture')->getClientOriginalName(); 
+        $request->file('profile_picture')->move($destinationPath_forcv,$fileName_forcv);
+    }
+        // $cv_file = $request->file('cv_file')->store('public/uploads/cv_files');
+        $user_update->update([
+            'name' => $fields['name'],
+            'email' => $fields['email'],
+            'phonenumber' => $fields['phonenumber'],
+            'password' => bcrypt($fields['password']),
+            'role' => $fields['role'],
+            'nrc' => $fields['nrc'],
+            'address' => $fields['address'],
+            'cv_file' => $fileName,
+            'profile_picture' => $fileName_forcv
+        ]);
+        return [
+            'message' => 'Updated Successfully'
+        ];
     }
 
     /**
