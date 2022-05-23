@@ -59,7 +59,8 @@ Route::group(['middleware' => ['auth:sanctum']], function(){
 
     // Job Apply
     Route::post('/jobapply/{userid}/{jobid}',[ApplyJobController::class,'store']);
-    Route::get('/jobapply',[ApplyJobController::class,'index']);
+    // Route::get('/jobapply',[ApplyJobController::class,'index']);
+    Route::get('userapplyjob/list',[ApplyJobController::class,'index']);
 });
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //     return $request->user();

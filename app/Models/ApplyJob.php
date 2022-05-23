@@ -12,10 +12,16 @@ class ApplyJob extends Model
         'user_id',
         'job_id',
     ];
-    public function UserModelForApplyJob(){
-        return $this->belongsTo(ApplyJob::class,'user_id');
+    public function ApplyJobUserModel(){
+        return $this->hasMany(User::class,'id','user_id'); 
     }
-    public function JobsListModelForApplyJob(){
-        return $this->belongsTo(Jobs::class,'user_id');
+    public function ApplyJobListModel(){
+        return $this->hasMany(Jobs::class,'id','job_id');
+    } 
+    public function ApplyJobLocation(){
+        return $this->hasMany(Location::class,'id','location_id');
+    }
+    public function ApplyJobCategories(){
+        return $this->hasMany(JobCategory::class,'id','category_id');
     }
 }

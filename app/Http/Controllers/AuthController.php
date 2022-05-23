@@ -48,12 +48,12 @@ class AuthController extends Controller
                 'name' => 'required|string',
                 'email' => 'required|string|unique:users,email',
                 'role' => 'required|string',
-                'nrc'  => 'required|string',
-                'address' => 'required|string',
+                'nrc'  => 'nullable|string',
+                'address' => 'nullable|string',
                 'cv_file' => 'nullable|mimes:pdf',
                 'profile_picture' => 'nullable|mimes:jpeg,png',
                 'password' => 'required|string|confirmed',
-                'phonenumber' => 'required',
+                'phonenumber' => 'nullable',
             ]);
             // $profile_pictures = $request->file('profile_picture');
             // $profile_pictures = $request->file('profile_picture')->store('public/uploads/profile_pictures');
@@ -81,11 +81,11 @@ class AuthController extends Controller
             $user = User::create([
                 'name' => $fields['name'],
                 'email' => $fields['email'],
-                'phonenumber' => $fields['phonenumber'],
+                'phonenumber' => '-',
                 'password' => bcrypt($fields['password']),
                 'role' => $fields['role'],
-                'nrc' => $fields['nrc'],
-                'address' => $fields['address'],
+                'nrc' => '-',
+                'address' => '-',
                 'cv_file' => $fileName,
                 'profile_picture' => $fileName_forcv
             ]);

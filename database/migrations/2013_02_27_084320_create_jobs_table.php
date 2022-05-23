@@ -16,8 +16,8 @@ class CreateJobsTable extends Migration
         Schema::create('jobs', function (Blueprint $table) {
             $table->id();
             $table->string('job_title');
-            $table->string('job_description');
-            $table->string('qualification'); 
+            $table->text('job_description');
+            $table->text('qualification'); 
             $table->unsignedBigInteger('location_id');
             $table->unsignedBigInteger('category_id');
             $table->foreign('location_id')
@@ -30,8 +30,8 @@ class CreateJobsTable extends Migration
                   ->onDelete('cascade');
             $table->string('salary');
             $table->string('township');
-            $table->string('experiences');
-            $table->string('responsibilities');
+            $table->text('experiences');
+            $table->text('responsibilities');
             $table->timestamps(); 
         });
     }

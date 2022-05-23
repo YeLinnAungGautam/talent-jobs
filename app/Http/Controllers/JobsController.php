@@ -20,7 +20,7 @@ class JobsController extends Controller
        $jobs = DB::table('jobs')
                ->join('locations','jobs.location_id','=','locations.id')
                ->join('job_categories','jobs.category_id','=','job_categories.id')
-             ->select('jobs.*','locations.location','jobs.*','job_categories.name')
+               ->select('jobs.*','locations.location','jobs.*','job_categories.name')
                ->get();
         // $jobs = Jobs::all();
         return $jobs;
@@ -49,7 +49,7 @@ class JobsController extends Controller
             'job_description' => 'required|string',
             'qualification'=> 'required',
             'salary' => 'required|string',
-            'township' => 'required|string',
+            'township' => 'nullable|string',
             'experiences' => 'required|string',
             'responsibilities' => 'required|string'
         ]);
@@ -63,7 +63,7 @@ class JobsController extends Controller
             'location_id' =>$location_id->id,
             'category_id' =>$category_id->id,
             'salary' => $fields['salary'],
-            'township' => $fields['township'],
+            'township' => '-',
             'experiences' => $fields['experiences'],
             'responsibilities' => $fields['responsibilities']
         ]);
@@ -86,24 +86,8 @@ class JobsController extends Controller
      */
     public function show($id) 
     {
-        // $jobs = Jobs::find($id)
-        //            ->join('locations','jobs.location_id','=','locations.id')
-        //            ->join('job_categories','jobs.category_id','=','job_categories.id')
-        //         //    ->select('jobs.*','locations.location','jobs.*','job_categories.name')
-        //             ->select('locations.location','job_categories.name')
-        //            ->get();
-        // $jobs = Jobs::find($id);
-        $jobs_retreive = Jobs::where('id','=',$id)->pluck('job_title','location_id');
-        $jobsss = $jobs_retreive
-                  ->join('locations','jobs.location_id','=','locations.id')
-                  ->select('jobs.*','locations.location')
-                        ->get();
-                        // ->join('locations','jobs.location_id','=','locations.id')
-                        // ->join('job_categories','jobs.category_id','=','job_categories.id')
-                        // ->select('jobs.*','locations.location','jobs.*','job_categories.name')
-                      
-                        ;
-            return $jobsss;
+            $jobs = Jobs::with('jobsmodel','jobscategoriesmodel')->where('id',$id)->first();
+            return $jobs;
     }
 
     /**

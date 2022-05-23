@@ -53,7 +53,7 @@ class BlogController extends Controller
         ]);
         return response([
             'message' => 'Created Successful'
-        ], 200);
+        ], 201);
     }
 
     /**

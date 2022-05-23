@@ -23,12 +23,12 @@ class Jobs extends Model
     //     'necessary_skills' => 'array'
     //     ];
     public function jobsmodel(){
-        return $this->hasMany(Location::class,'id');
+        return $this->hasMany(Location::class,'id','location_id');
     }
     public function jobscategoriesmodel(){
-        return $this->hasMany(JobCategory::class,'id');
+        return $this->hasMany(JobCategory::class,'id','category_id');
     }
-    public function ApplyJobListModel(){
-        return $this->hasMany(Jobs::class,'id');
+    public function JobsListModelForApplyJob(){
+        return $this->belongsTo(Jobs::class,'user_id'); 
     }
 }
