@@ -17,7 +17,9 @@ class AuthController extends Controller
      */
     public function index()
     {
-        return User::all();
+        $user = User::with('Userdesignation')->get();
+        // return User::all();
+        return $user;
     }
 
     /**
