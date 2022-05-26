@@ -66,6 +66,8 @@ Route::group(['middleware' => ['auth:sanctum']], function(){
     //Designation 
     Route::get('/designation',[DesignationsController::class,'index']);
     Route::post('/designation',[DesignationsController::class,'store']);
+    Route::delete('/designation/delete/{id}',[DesignationsController::class,'destroy']);
+    Route::put('/designation/update/{id}',[DesignationsController::class,'update']);
 });
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //     return $request->user();

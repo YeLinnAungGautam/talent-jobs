@@ -63,7 +63,7 @@ class DesignationsController extends Controller
      */
     public function show($id)
     {
-        //
+        
     }
 
     /**
@@ -84,9 +84,24 @@ class DesignationsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update($id, Request $request)
     {
-        //
+        $fields = $request->validate([
+            'company_name' => 'required|string',
+            'salary' => 'required|string',
+            'position' => 'required|string',
+            'user_id' => 'required'
+        ]);
+        $designation_update = designation::find($id);
+        $designation_update->update([
+            'company_name' => $fields['company_name'],
+            'salary' => $fields['salary'],
+            'position' => $fields['position'],
+            'user_id' => $fields['user_id'],
+        ]);
+        return response([
+            'message' => 'Updated Successfully'
+        ], 201);
     }
 
     /**
@@ -97,6 +112,10 @@ class DesignationsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $success = designation::find($id);
+        $success->delete();
+        return response([
+            'success' => 'Deleted Successful'
+        ], 201);
     }
 }

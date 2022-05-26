@@ -135,7 +135,7 @@ class JobsController extends Controller
         ]);
         return response([
             'message' => 'Update Successfully'
-        ], 200);
+        ], 201);
     }
 
     /**
