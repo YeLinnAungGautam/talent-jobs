@@ -15,6 +15,7 @@ class ApplyJob extends Model
     public function ApplyJobUserModel(){
         return $this->hasMany(User::class,'id','user_id'); 
     }
+
     public function ApplyJobListModel(){
         return $this->hasMany(Jobs::class,'id','job_id');
     } 
@@ -23,5 +24,8 @@ class ApplyJob extends Model
     }
     public function ApplyJobCategories(){
         return $this->hasMany(JobCategory::class,'id','category_id');
+    }
+    public function ApplyJobdesignation(){
+        return $this->hasMany(designation::class,'user_id');
     }
 }

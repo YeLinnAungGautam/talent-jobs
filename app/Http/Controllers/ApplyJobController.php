@@ -16,7 +16,7 @@ class ApplyJobController extends Controller
      */
     public function index()
     {
-        $user_apply_job = ApplyJob::with('ApplyJobUserModel','ApplyJobListModel','ApplyJobListModel.jobsmodel','ApplyJobListModel.jobscategoriesmodel')->get();
+        $user_apply_job = ApplyJob::with('ApplyJobdesignation','ApplyJobdesignation','ApplyJobUserModel','ApplyJobListModel','ApplyJobListModel.jobsmodel','ApplyJobListModel.jobscategoriesmodel')->get();
         return $user_apply_job;
     }
 
