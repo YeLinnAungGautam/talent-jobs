@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\PayUService\Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Models\User;
@@ -55,7 +56,7 @@ class AuthController extends Controller
                 'cv_file' => 'nullable|mimes:pdf',
                 'profile_picture' => 'nullable|mimes:jpeg,png',
                 'password' => 'required|string|confirmed',
-                'phonenumber' => 'nullable',
+                'phonenumber' => 'nullable|string',
             ]);
             // $profile_pictures = $request->file('profile_picture');
             // $profile_pictures = $request->file('profile_picture')->store('public/uploads/profile_pictures');
@@ -144,6 +145,40 @@ class AuthController extends Controller
             'message' => 'You Are Logged Out'
         ];
     }
+    public function updatepassword($userid, Request $request){
+       return "Hello";
+        // $current_login_user_id = auth()->user()->id;
+        // $fields = $request->validate([
+        //     'password' => 'required|string|confirmed',
+        // ]);
+        // if($current_login_user_id == $user_id){
+        //     return "Hello";
+        // }
+        // else{
+        //     return "Fail";
+        // }
+
+
+        // $fields = $request->validate([
+        //     'password' => 'required|string|confirmed',
+        // ]);
+        // $user_id = User::findorfail($userid);
+        // return $user_id;
+        // if($user_id){
+        //     $user_update->update([
+        //         'password' => bcrypt($fields['password']), 
+        //     ]);
+        //     return [
+        //         'message' => 'Updated Successfully'
+        //     ];   
+        // }
+        // else{
+        //     return [
+        //         'message' => 'User Not Found'
+        //     ];  
+        // }
+        
+    }
     /**
      * Display the specified resource.
      *
@@ -153,7 +188,8 @@ class AuthController extends Controller
     public function show($id)
     {
         $user = User::find($id);
-        return $user;
+        return ["user" => $user];
+        // return $user;
     }
 
     /**
@@ -176,21 +212,68 @@ class AuthController extends Controller
      */
     public function update($id, Request $request)
     {
-        // $user_id = User::findorFail($id);
+    //     // $user_id = User::findorFail($id);
+    //     $fields = $request->validate([
+    //         'name' => 'required|string',
+    //         'email' => 'required|email|unique:users,email',
+    //         'role' => 'required|string',
+    //         'nrc'  => 'required|string',
+    //         'address' => 'required|string',
+    //         'cv_file' => 'nullable|mimes:pdf',
+    //         'profile_picture' => 'nullable|mimes:jpeg,png',
+    //         'password' => 'required|string|confirmed',
+    //         'phonenumber' => 'required',
+    //     ]);
+    //     $user_update = User::find($id);
+    //     if($request->hasFile('cv_file') == null){
+    //         $fileName = '-';
+    //     }
+    //     else{
+    //         $destinationPath = public_path().'/profile_images';
+    //         $request->file = $request->file('cv_file')->getClientOriginalName();
+    //         $fileName = $request->file('cv_file')->getClientOriginalName(); 
+    //         $request->file('cv_file')->move($destinationPath,$fileName);
+    //     }
+    //     if($request->hasFile('profile_picture') == null){
+    //         $fileName_forcv = '-';
+    //     }
+    //     else{
+    //     //For CV Files
+    //     $destinationPath_forcv = public_path().'/profile_images';
+    //     $request->file = $request->file('profile_picture')->getClientOriginalName();
+    //     $fileName_forcv = $request->file('profile_picture')->getClientOriginalName(); 
+    //     $request->file('profile_picture')->move($destinationPath_forcv,$fileName_forcv);
+    // }
+    //     // $cv_file = $request->file('cv_file')->store('public/uploads/cv_files');
+    //     $user_update->update([
+    //         'name' => $fields['name'],
+    //         'email' => $fields['email'],
+    //         'phonenumber' => $fields['phonenumber'],
+    //         'password' => bcrypt($fields['password']),
+    //         'role' => $fields['role'],
+    //         'nrc' => $fields['nrc'],
+    //         'address' => $fields['address'],
+    //         'cv_file' => $fileName,
+    //         'profile_picture' => $fileName_forcv
+    //     ]);
+    //     return [
+    //         'message' => 'Updated Successfully'
+    //     ];
+    try{
         $fields = $request->validate([
-            'name' => 'required|string',
-            'email' => 'required|email|unique:users,email',
+            'name' => 'nullable|string',
+            // 'email' => 'required|email|unique:users,email',
             'role' => 'required|string',
-            'nrc'  => 'required|string',
-            'address' => 'required|string',
-            'cv_file' => 'nullable|mimes:pdf',
-            'profile_picture' => 'nullable|mimes:jpeg,png',
-            'password' => 'required|string|confirmed',
-            'phonenumber' => 'required',
+            'nrc'  => 'nullable|string',
+            'address' => 'nullable|string',
+            'cv_file' => 'nullable',
+            'profile_picture' => 'nullable',
+            // 'password' => 'nullable|string',
+            'phonenumber' => 'nullable',
         ]);
         $user_update = User::find($id);
-        if($request->hasFile('cv_file') == null){
-            $fileName = '-';
+        if($request->hasFile('cv_file') == null || $request->hasFile('cv_file') == "null" || $fields['cv_file'] == "null"){
+            $fileName = $user_update->cv_file;
         }
         else{
             $destinationPath = public_path().'/profile_images';
@@ -198,8 +281,8 @@ class AuthController extends Controller
             $fileName = $request->file('cv_file')->getClientOriginalName(); 
             $request->file('cv_file')->move($destinationPath,$fileName);
         }
-        if($request->hasFile('profile_picture') == null){
-            $fileName_forcv = '-';
+        if($request->hasFile('profile_picture') == null || $request->hasFile('profile_picture') == "null" || $fields['cv_file'] == "null"){
+            $fileName_forcv = $user_update->profile_picture;
         }
         else{
         //For CV Files
@@ -210,19 +293,22 @@ class AuthController extends Controller
     }
         // $cv_file = $request->file('cv_file')->store('public/uploads/cv_files');
         $user_update->update([
-            'name' => $fields['name'],
-            'email' => $fields['email'],
-            'phonenumber' => $fields['phonenumber'],
-            'password' => bcrypt($fields['password']),
+            'name' => $fields['name'] ?? $user_update->name ,
+            // 'email' => $fields['email'],
+            'phonenumber' => $fields['phonenumber'] ?? $user_update->phonenumber,
+            // 'password' => empty($fields['password']) ? $user_update->password : bcrypt($fields['password']) ,
             'role' => $fields['role'],
-            'nrc' => $fields['nrc'],
-            'address' => $fields['address'],
+            'nrc' => $fields['nrc'] ?? $user_update->nrc,
+            'address' => $fields['address'] ?? $user_update->address,
             'cv_file' => $fileName,
             'profile_picture' => $fileName_forcv
         ]);
         return [
             'message' => 'Updated Successfully'
         ];
+    } catch(Exception $e){
+        return $e;
+    }
     }
 
     /**

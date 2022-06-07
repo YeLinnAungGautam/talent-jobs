@@ -51,8 +51,10 @@ class User extends Authenticatable
     public function UserModelForApplyJob(){
         return $this->belongsTo(ApplyJob::class,'user_id');
     } 
+    public function userApplyJob(){
+        return $this->belongsTo(ApplyJob::class,'user_id');
+    } 
     public function Userdesignation(){
         return $this->hasMany(designation::class,'user_id');
     }
-    
 }

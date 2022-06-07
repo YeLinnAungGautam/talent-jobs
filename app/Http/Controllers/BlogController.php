@@ -144,7 +144,6 @@ class BlogController extends Controller
      */
     public function searchblog($name){
             $blog = Blog::where('title','like','%'.$name.'%')->orWhere('description','like','%'.$name.'%')->paginate(6);
-
             return $blog;
     } 
 }

@@ -22,13 +22,19 @@ class Jobs extends Model
     // protected $casts = [
     //     'necessary_skills' => 'array'
     //     ];
-    public function jobsmodel(){
+    public function location(){
         return $this->hasMany(Location::class,'id','location_id');
     }
-    public function jobscategoriesmodel(){
+    public function category(){
         return $this->hasMany(JobCategory::class,'id','category_id');
     }
     public function JobsListModelForApplyJob(){
         return $this->belongsTo(Jobs::class,'user_id'); 
+    }
+    public function jobApply(){
+        return $this->belongsTo(ApplyJob::class,'job_id');
+    }
+    public function jobApplys(){
+        return $this->hasMany(ApplyJob::class,'job_id');
     }
 }

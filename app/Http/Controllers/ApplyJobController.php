@@ -16,10 +16,10 @@ class ApplyJobController extends Controller
      */
     public function index()
     {
-        $user_apply_job = ApplyJob::with('ApplyJobdesignation','ApplyJobdesignation','ApplyJobUserModel','ApplyJobListModel','ApplyJobListModel.jobsmodel','ApplyJobListModel.jobscategoriesmodel')->get();
-        return $user_apply_job;
+        // $user_apply_job = ApplyJob::with('ApplyJobdesignation','ApplyJobdesignation','ApplyJobUserModel','ApplyJobListModel','ApplyJobListModel.jobsmodel','ApplyJobListModel.jobscategoriesmodel')->get();
+        $applyJobs = ApplyJob::with('ApplyJobdesignation','job', 'userApply','job.location','job.category')->get();
+        return $applyJobs;
     }
-
     /**
      * Show the form for creating a new resource.
      *
