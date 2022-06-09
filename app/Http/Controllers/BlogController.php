@@ -53,7 +53,7 @@ class BlogController extends Controller
         ]);
         return response([
             'message' => 'Created Successful'
-        ], 401);
+        ], 201);
     }
 
     /**
@@ -144,7 +144,6 @@ class BlogController extends Controller
      */
     public function searchblog($name){
             $blog = Blog::where('title','like','%'.$name.'%')->orWhere('description','like','%'.$name.'%')->paginate(6);
-
             return $blog;
     } 
 }

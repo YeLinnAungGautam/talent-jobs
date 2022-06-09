@@ -20,7 +20,7 @@ class JobsController extends Controller
        $jobs = DB::table('jobs')
                ->join('locations','jobs.location_id','=','locations.id')
                ->join('job_categories','jobs.category_id','=','job_categories.id')
-             ->select('jobs.*','locations.location','jobs.*','job_categories.name')
+               ->select('jobs.*','locations.location','jobs.*','job_categories.name')
                ->get();
         // $jobs = Jobs::all();
         return $jobs;
@@ -49,7 +49,7 @@ class JobsController extends Controller
             'job_description' => 'required|string',
             'qualification'=> 'required',
             'salary' => 'required|string',
-            'township' => 'required|string',
+            'township' => 'nullable|string',
             'experiences' => 'required|string',
             'responsibilities' => 'required|string'
         ]);
@@ -63,7 +63,7 @@ class JobsController extends Controller
             'location_id' =>$location_id->id,
             'category_id' =>$category_id->id,
             'salary' => $fields['salary'],
-            'township' => $fields['township'],
+            'township' => '-',
             'experiences' => $fields['experiences'],
             'responsibilities' => $fields['responsibilities']
         ]);
@@ -84,14 +84,11 @@ class JobsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id) 
     {
-        $jobs = Jobs::find($id)
-                ->join('locations','jobs.location_id','=','locations.id')
-                ->select('jobs.*','locations.location')
-                ->get();
-        return $jobs;
-    }
+            $jobs = Jobs::with('location','category')->where('id',$id)->first();
+            return $jobs;
+    } 
 
     /**
      * Show the form for editing the specified resource.
@@ -118,7 +115,7 @@ class JobsController extends Controller
             'job_description' => 'required|string',
             'qualification'=> 'required',
             'salary' => 'required|string',
-            'township' => 'required|string',
+            'township' => 'string',
             'experiences' => 'required|string',
             'responsibilities' => 'required|string',
             'location_id' => 'required',
@@ -129,8 +126,8 @@ class JobsController extends Controller
             'job_title' => $fields['job_title'],
             'job_description' => $fields['job_description'],
             'qualification' =>$fields['qualification'],
-            'location_id' =>$fields['location_id'],
-            'category_id' =>$fields['category_id'],
+            'location_id' =>$request['location_id'],
+            'category_id' =>$request['category_id'],
             'salary' => $fields['salary'],
             'township' => $fields['township'],
             'experiences' => $fields['experiences'],
@@ -138,7 +135,7 @@ class JobsController extends Controller
         ]);
         return response([
             'message' => 'Update Successfully'
-        ], 200);
+        ], 201);
     }
 
     /**
@@ -155,16 +152,68 @@ class JobsController extends Controller
             'success' => 'Deleted Successful'
         ];
     }
-    public function searchjobs($name){
+    // public function searchjobs($name){
+    //     // $search_key_word = preg_replace('/\s+/', '', $name);
+    //     $jobs = Jobs::where('job_title','like','%'.$name.'%')
+    //             ->orWhere('job_description','like','%'.$name.'%')
+    //             ->orWhere('location','like','%'.$name.'%')
+    //             ->orWhere('name','like','%'.$name.'%')
+    //             ->join('locations','jobs.location_id','=','locations.id')
+    //             ->join('job_categories','jobs.category_id','=','job_categories.id')
+    //             ->select('jobs.*','locations.location','jobs.*','job_categories.name')
+    //             ->paginate(6);
+    //     return $jobs;
+    // }
+    public function searchjobsquery(Request $request){
         // $search_key_word = preg_replace('/\s+/', '', $name);
-        $jobs = Jobs::where('job_title','like','%'.$name.'%')
-                ->orWhere('job_description','like','%'.$name.'%')
-                ->orWhere('location','like','%'.$name.'%')
-                ->orWhere('name','like','%'.$name.'%')
+        $jobposition = $request->jobposition ;
+        $location = $request->location ;
+        $jobcategory = $request->jobcategory;
+        $salarystart = $request->salarystart;
+        $salaryend = $request->salaryend ;
+  
+        if($location == '' && $jobposition == ''){
+            
+            $jobs = Jobs::where('name','like','%'.$jobcategory.'%')  
                 ->join('locations','jobs.location_id','=','locations.id')
                 ->join('job_categories','jobs.category_id','=','job_categories.id')
                 ->select('jobs.*','locations.location','jobs.*','job_categories.name')
-                ->paginate(6);
-        return $jobs;
+                ->get();
+            return $jobs;
+        }
+        if($location == '' && $jobcategory == ''){
+            $jobs = Jobs::where('job_title','like','%'.$jobposition.'%')   
+                ->join('locations','jobs.location_id','=','locations.id')
+                ->join('job_categories','jobs.category_id','=','job_categories.id')
+                ->select('jobs.*','locations.location','jobs.*','job_categories.name')
+                ->get();
+            return $jobs;
+        }
+        if($jobposition == ''){
+            $jobs = Jobs::where('location','like','%'.$location.'%')                
+                ->join('locations','jobs.location_id','=','locations.id')
+                ->join('job_categories','jobs.category_id','=','job_categories.id')
+                ->select('jobs.*','locations.location','jobs.*','job_categories.name')
+                ->get();
+            return $jobs;
+        }
+        if($salarystart != '' && $salaryend !=''){ 
+            $jobs = Jobs::where('salary', '>=', $salarystart)->where('salary', '<=', $salaryend)               
+                ->join('locations','jobs.location_id','=','locations.id')
+                ->join('job_categories','jobs.category_id','=','job_categories.id')
+                ->select('jobs.*','locations.location','jobs.*','job_categories.name')
+                ->get();
+            return $jobs;
+        }
+        else{
+            $jobs = Jobs::where('job_title','like','%'.$jobposition.'%')
+                ->orWhere('location','like','%'.$location.'%')
+                ->orWhere('name','like','%'.$jobcategory.'%')
+                ->join('locations','jobs.location_id','=','locations.id')
+                ->join('job_categories','jobs.category_id','=','job_categories.id')
+                ->select('jobs.*','locations.location','jobs.*','job_categories.name')
+                    ->get();
+            return $jobs;
+        }
     }
 }

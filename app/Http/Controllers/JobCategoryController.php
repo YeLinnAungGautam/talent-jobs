@@ -94,6 +94,10 @@ class JobCategoryController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $success = JobCategory::find($id);
+        $success->delete();
+        return [
+            'success' => "Category is Successfully Deleted"
+        ]; 
     }
 }
