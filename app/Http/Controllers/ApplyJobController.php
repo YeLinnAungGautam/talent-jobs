@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\SendMail;
 use App\Models\Jobs;
 use App\Models\User;
 use App\Models\ApplyJob;
@@ -44,6 +46,8 @@ class ApplyJobController extends Controller
             'user_id' => $user_id->id,
             'job_id' => $job_list->id,
         ]);
+        $job_list = Jobs::with('location','category')->where('id',$jobid)->get();
+        \Mail::to(auth()->user()->email)->send(new Sendmail($job_list));
         if($applyjob){
             return response()->json([
                 'status' => 'success',

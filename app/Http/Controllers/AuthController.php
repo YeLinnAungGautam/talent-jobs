@@ -146,7 +146,7 @@ class AuthController extends Controller
         ];
     }
     public function updatepassword($userid, Request $request){
-       return "Hello";
+      
         // $current_login_user_id = auth()->user()->id;
         // $fields = $request->validate([
         //     'password' => 'required|string|confirmed',
@@ -159,24 +159,24 @@ class AuthController extends Controller
         // }
 
 
-        // $fields = $request->validate([
-        //     'password' => 'required|string|confirmed',
-        // ]);
-        // $user_id = User::findorfail($userid);
-        // return $user_id;
-        // if($user_id){
-        //     $user_update->update([
-        //         'password' => bcrypt($fields['password']), 
-        //     ]);
-        //     return [
-        //         'message' => 'Updated Successfully'
-        //     ];   
-        // }
-        // else{
-        //     return [
-        //         'message' => 'User Not Found'
-        //     ];  
-        // }
+        $fields = $request->validate([
+            'password' => 'required|string|confirmed',
+        ]);
+        $user_id = User::findorfail($userid);
+        
+        if($user_id){
+            $user_id->update([
+                'password' => bcrypt($fields['password']), 
+            ]);
+            return [
+                'message' => 'Updated Successfully'
+            ];   
+        }
+        else{
+            return [
+                'message' => 'User Not Found'
+            ];  
+        }
         
     }
     /**

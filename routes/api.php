@@ -64,16 +64,14 @@ Route::group(['middleware' => ['auth:sanctum']], function(){
 
     //Job Apply
     Route::post('/jobapply/{userid}/{jobid}',[ApplyJobController::class,'store']);
-    //Route::get('/jobapply',[ApplyJobController::class,'index']);
-    Route::get('userapplyjob/list',[ApplyJobController::class,'index']);
+    Route::get('/jobapply',[ApplyJobController::class,'index']);
+    // Route::get('jobapply/list',[ApplyJobController::class,'index']);
 
     //Designation 
     Route::get('/designation',[DesignationsController::class,'index']);
     Route::post('/designation',[DesignationsController::class,'store']);
     Route::delete('/designation/delete/{id}',[DesignationsController::class,'destroy']);
-    Route::put('/designation/update/{userid}',[DesignationsController::class,'update']);
-
-   
+    Route::put('/designation/update/{userid}',[DesignationsController::class,'update']);   
 });
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //     return $request->user();
