@@ -22,7 +22,6 @@ class JobsController extends Controller
                ->join('job_categories','jobs.category_id','=','job_categories.id')
                ->select('jobs.*','locations.location','jobs.*','job_categories.name')
                ->get();
-        // $jobs = Jobs::all();
         return $jobs;
     } 
 
@@ -86,7 +85,7 @@ class JobsController extends Controller
      */
     public function show($id) 
     {
-            $jobs = Jobs::with('location','category')->where('id',$id)->first();
+            $jobs = Jobs::with('location','category','emailsender')->where('id',$id)->first();
             return $jobs;
     } 
 

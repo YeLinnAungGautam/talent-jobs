@@ -8,6 +8,7 @@ use App\Mail\SendMail;
 use App\Models\Jobs;
 use App\Models\User;
 use App\Models\ApplyJob;
+use App\Models\EmailSender;
 
 class ApplyJobController extends Controller
 {
@@ -47,12 +48,20 @@ class ApplyJobController extends Controller
             'job_id' => $job_list->id,
         ]);
         $job_list = Jobs::with('location','category')->where('id',$jobid)->get();
-        \Mail::to(auth()->user()->email)->send(new Sendmail($job_list));
-        if($applyjob){
-            return response()->json([
-                'status' => 'success',
-            ]);
-        }
+        $job_email_to_sent = Jobs::with('emailsender')->where('id',$jobid)->get(['email_receiver']);
+        // foreach ($job_email_to_sent as $emailsender_applyjob) {
+        //         $emailsender_applyjob->sender_email;
+        // }
+        return $job_email_to_sent;
+        // $find_email = EmailSender::where('id',$job_email_to_sent)->get(['sender_email']);
+        // \Mail::to(auth()->user()->email)->send(new Sendmail($job_list));
+        // \Mail::to($job_email_to_sent->email_receiver)->send(new Sendmail($job_list));
+        // if($applyjob){
+        //     return response()->json([
+        //         'status' => 'success',
+        //     ]);
+        // }
+        // return $job_email_to_sent;
     }
 
     /**

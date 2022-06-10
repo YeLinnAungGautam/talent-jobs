@@ -28,6 +28,9 @@ class Jobs extends Model
     public function category(){
         return $this->hasMany(JobCategory::class,'id','category_id');
     }
+    public function emailsender(){
+        return $this->hasMany(EmailSender::class,'id','email_receiver');
+    }
     public function JobsListModelForApplyJob(){
         return $this->belongsTo(Jobs::class,'user_id'); 
     }

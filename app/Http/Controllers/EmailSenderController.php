@@ -3,10 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Jobs;
-use App\Models\JobCategory;
-
-class JobCategoryController extends Controller
+use App\Models\EmailSender;
+class EmailSenderController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,7 +13,7 @@ class JobCategoryController extends Controller
      */
     public function index()
     {
-        return JobCategory::all();
+        return EmailSender::all();
     }
 
     /**
@@ -37,21 +35,21 @@ class JobCategoryController extends Controller
     public function store(Request $request)
     {
         $fields = $request->validate([
-            'name' => 'required|string',
+            'sender_email' => 'required|string',
         ]);
-        $job_category= JobCategory::create([
-            'name' => $fields['name'],
+        $receiver_mail= EmailSender::create([
+            'sender_email' => $fields['sender_email'],
         ]);
-        if($job_category){
+        if($receiver_mail){
             return response()->json([
-                'status' => 'success',
-                'data' =>  $job_category    
+                'status' => 'success',  
             ]);
-        } 
+        }
         return response([
             'message' => 'Created Successful'
         ], 401);
     }
+
     /**
      * Display the specified resource.
      *
@@ -94,10 +92,10 @@ class JobCategoryController extends Controller
      */
     public function destroy($id)
     {
-        $success = JobCategory::find($id);
+        $success = EmailSender::find($id);
         $success->delete();
-        return [
-            'success' => "Category is Successfully Deleted"
-        ]; 
+        return response([
+            'success' => 'Deleted Successful'
+        ], 201);
     }
 }

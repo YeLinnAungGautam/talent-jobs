@@ -20,6 +20,7 @@ class CreateJobsTable extends Migration
             $table->text('qualification'); 
             $table->unsignedBigInteger('location_id');
             $table->unsignedBigInteger('category_id');
+            $table->unsignedBigInteger('email_receiver');
             $table->foreign('location_id')
                   ->references('id')
                   ->on('locations')
@@ -27,6 +28,10 @@ class CreateJobsTable extends Migration
             $table->foreign('category_id')
                   ->references('id')
                   ->on('job_categories')
+                  ->onDelete('cascade');
+            $table->foreign('email_receiver')
+                  ->references('id')
+                  ->on('email_senders')
                   ->onDelete('cascade');
             $table->string('salary');
             $table->string('township');

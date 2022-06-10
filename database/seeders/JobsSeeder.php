@@ -22,7 +22,8 @@ class JobsSeeder extends Seeder
             'salary' => '200000',
             'township' => 'Pabedan',
             'experiences' => '2',
-            'responsibilities' => 'I dont know what to add haha'
+            'responsibilities' => 'I dont know what to add haha',
+            'email_receiver' =>'1'
         ]);  
         Jobs::create([
             'job_title' => 'testing Job Two',
@@ -33,7 +34,8 @@ class JobsSeeder extends Seeder
             'salary' => '250000',
             'township' => 'YayKyaw',
             'experiences' => '5',
-            'responsibilities' => 'I dont know what to add haha'
+            'responsibilities' => 'I dont know what to add haha',
+            'email_receiver' =>'2'
         ]);        
     }
 }

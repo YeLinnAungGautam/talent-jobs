@@ -9,6 +9,7 @@ use App\Http\Controllers\JobsController;
 use App\Http\Controllers\JobCategoryController;
 use App\Http\Controllers\ApplyJobController;
 use App\Http\Controllers\DesignationsController;
+use App\Http\Controllers\EmailSenderController;
 
 
 /*
@@ -71,7 +72,13 @@ Route::group(['middleware' => ['auth:sanctum']], function(){
     Route::get('/designation',[DesignationsController::class,'index']);
     Route::post('/designation',[DesignationsController::class,'store']);
     Route::delete('/designation/delete/{id}',[DesignationsController::class,'destroy']);
-    Route::put('/designation/update/{userid}',[DesignationsController::class,'update']);   
+    Route::put('/designation/update/{userid}',[DesignationsController::class,'update']);
+    
+    // Email Sender
+    Route::post('/emailsender',[EmailSenderController::class,'store']);
+    Route::get('/emailsender/all',[EmailSenderController::class,'index']);
+    Route::delete('/emailsender/delete/{id}',[EmailSenderController::class,'destroy']);
+
 });
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //     return $request->user();
