@@ -57,4 +57,7 @@ class User extends Authenticatable
     public function Userdesignation(){
         return $this->hasMany(designation::class,'user_id');
     }
+    public function UserNotification(){
+        return $this->hasMany(Notifications::class,'user_id');
+    }
 }

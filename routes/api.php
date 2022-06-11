@@ -10,6 +10,7 @@ use App\Http\Controllers\JobCategoryController;
 use App\Http\Controllers\ApplyJobController;
 use App\Http\Controllers\DesignationsController;
 use App\Http\Controllers\EmailSenderController;
+use App\Http\Controllers\NotificationsController;
 
 
 /*
@@ -78,6 +79,11 @@ Route::group(['middleware' => ['auth:sanctum']], function(){
     Route::post('/emailsender',[EmailSenderController::class,'store']);
     Route::get('/emailsender/all',[EmailSenderController::class,'index']);
     Route::delete('/emailsender/delete/{id}',[EmailSenderController::class,'destroy']);
+
+    // Notifications
+    Route::get('/notification',[NotificationsController::class,'index']);
+    Route::post('/notification',[NotificationsController::class,'store']);
+    Route::delete('/notification/delete/{id}',[NotificationsController::class,'destroy']);
 
 });
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {

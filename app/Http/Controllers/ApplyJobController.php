@@ -39,7 +39,7 @@ class ApplyJobController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store($userid,$jobid)
+    public function store($userid,$jobid,Request $request)
     {
         $user_id = User::findOrfail($userid);
         $job_list = Jobs::findorfail($jobid);
@@ -48,20 +48,13 @@ class ApplyJobController extends Controller
             'job_id' => $job_list->id,
         ]);
         $job_list = Jobs::with('location','category')->where('id',$jobid)->get();
-        $job_email_to_sent = Jobs::with('emailsender')->where('id',$jobid)->get(['email_receiver']);
-        // foreach ($job_email_to_sent as $emailsender_applyjob) {
-        //         $emailsender_applyjob->sender_email;
-        // }
-        return $job_email_to_sent;
-        // $find_email = EmailSender::where('id',$job_email_to_sent)->get(['sender_email']);
-        // \Mail::to(auth()->user()->email)->send(new Sendmail($job_list));
-        // \Mail::to($job_email_to_sent->email_receiver)->send(new Sendmail($job_list));
-        // if($applyjob){
-        //     return response()->json([
-        //         'status' => 'success',
-        //     ]);
-        // }
-        // return $job_email_to_sent;
+        $get_login_user_email = $user_id->email;
+        \Mail::to($request->email_receiver)->send(new Sendmail($job_list));
+        if($applyjob){
+            return response()->json([
+                'status' => 'success',
+            ]);
+        }
     }
 
     /**

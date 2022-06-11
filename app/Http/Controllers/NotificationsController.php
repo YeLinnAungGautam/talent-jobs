@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\EmailSender;
-class EmailSenderController extends Controller
+use App\Models\Notifications;
+use App\Models\User;
+
+class NotificationsController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -12,8 +14,9 @@ class EmailSenderController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
-        return EmailSender::all();
+    { 
+        $notification = Notifications::with('user')->get();
+        return $notification;
     }
 
     /**
@@ -35,12 +38,16 @@ class EmailSenderController extends Controller
     public function store(Request $request)
     {
         $fields = $request->validate([
-            'sender_email' => 'required|string',
+            'title' => 'required|string',
+            'body'  => 'required|string',
+            'user_id' => 'required'
         ]);
-        $receiver_mail= EmailSender::create([
-            'sender_email' => $fields['sender_email'],
+        $notification= Notifications::create([
+            'title' => $fields['title'],
+            'body'  => $fields['body'],
+            'user_id' => $fields['user_id']
         ]);
-        if($receiver_mail){
+        if($notification){
             return response()->json([
                 'status' => 'success',  
             ]);
@@ -81,7 +88,7 @@ class EmailSenderController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // 
+        //
     }
 
     /**
@@ -92,7 +99,7 @@ class EmailSenderController extends Controller
      */
     public function destroy($id)
     {
-        $success = EmailSender::find($id);
+        $success = Notifications::find($id);
         $success->delete();
         return response([
             'success' => 'Deleted Successful'
