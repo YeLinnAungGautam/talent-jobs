@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Jobs;
-use App\Models\JobCategory;
+use App\Models\Notifications;
+use App\Models\User;
 
-class JobCategoryController extends Controller
+class NotificationsController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,8 +14,9 @@ class JobCategoryController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
-        return JobCategory::all();
+    { 
+        $notification = Notifications::with('user')->get();
+        return $notification;
     }
 
     /**
@@ -37,21 +38,25 @@ class JobCategoryController extends Controller
     public function store(Request $request)
     {
         $fields = $request->validate([
-            'name' => 'required|string',
+            'title' => 'required|string',
+            'body'  => 'required|string',
+            'user_id' => 'required'
         ]);
-        $job_category= JobCategory::create([
-            'name' => $fields['name'],
+        $notification= Notifications::create([
+            'title' => $fields['title'],
+            'body'  => $fields['body'],
+            'user_id' => $fields['user_id']
         ]);
-        if($job_category){
+        if($notification){
             return response()->json([
-                'status' => 'success',
-                'data' =>  $job_category    
+                'status' => 'success',  
             ]);
-        } 
+        }
         return response([
             'message' => 'Created Successful'
         ], 401);
     }
+
     /**
      * Display the specified resource.
      *
@@ -94,10 +99,10 @@ class JobCategoryController extends Controller
      */
     public function destroy($id)
     {
-        $success = JobCategory::find($id);
+        $success = Notifications::find($id);
         $success->delete();
-        return [
-            'success' => "Category is Successfully Deleted"
-        ]; 
+        return response([
+            'success' => 'Deleted Successful'
+        ], 201);
     }
 }
