@@ -16,6 +16,13 @@ class CreateJobsTable extends Migration
         Schema::create('jobs', function (Blueprint $table) {
             $table->id();
             $table->string('job_title');
+            $table->string('job_unique_id')->default('null');
+            $table->string('sharable_link')->default('null');
+            $table->string('open_in_link')->default('null');
+            $table->boolean('isRead')->default(false);
+            $table->boolean('isActive')->default(true);
+            $table->boolean('isTnj')->default(true);
+            $table->boolean('isTrash')->default(false);
             $table->text('job_description');
             $table->text('qualification'); 
             $table->unsignedBigInteger('location_id');

@@ -15,6 +15,7 @@ class CreateEmailSendersTable extends Migration
     {
         Schema::create('email_senders', function (Blueprint $table) {
             $table->id();
+            $table->string('staff_name');
             $table->string('sender_email');
             $table->timestamps();
         });

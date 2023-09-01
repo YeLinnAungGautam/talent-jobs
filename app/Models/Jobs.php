@@ -17,7 +17,11 @@ class Jobs extends Model
         'salary',
         'township',
         'experiences',
-        'responsibilities'
+        'email_receiver',
+        'responsibilities',
+        'job_unique_id',
+        'sharable_link',
+        'open_in_link'
     ];     
     // protected $casts = [
     //     'necessary_skills' => 'array'
@@ -40,4 +44,11 @@ class Jobs extends Model
     public function jobApplys(){
         return $this->hasMany(ApplyJob::class,'job_id');
     }
+
+    // public function notification(){
+    //     return $this->belongsTo(Notification::class,'job_id');
+    // }
+    public function notification(){
+        return $this->hasMany(Notifications::class,'job_id');
+    } 
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Notifications;
 use App\Models\User;
+use Response;
 
 class NotificationsController extends Controller
 {
@@ -13,10 +14,21 @@ class NotificationsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($id)
     { 
-        $notification = Notifications::with('user')->get();
-        return $notification;
+        $user = User::findOrFail($id);
+
+        
+        $notification = Notifications::with("job","job.location","job.category")->where('user_id',$id)->orderBy('id', 'DESC')->get();
+
+            if(count($notification) <= 0){
+                return  Response::json([
+                    'message ' => "No Data Found"
+                ], 404);
+            }
+            else{
+                return $notification;
+            }
     }
 
     /**

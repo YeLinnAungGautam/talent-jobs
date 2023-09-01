@@ -14,9 +14,11 @@ class EmailSenderSeeder extends Seeder
     public function run()
     {
         EmailSender::create([
+            'staff_name' => 'David',
             'sender_email' => 'davidgautam.1234@gmail.com',
         ]);
         EmailSender::create([
+            'staff_name' => 'Yelinn Aung',
             'sender_email' => 'yelinnaung@neptunemm.com',
         ]);
     }

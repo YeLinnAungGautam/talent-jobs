@@ -58,6 +58,6 @@ class User extends Authenticatable
         return $this->hasMany(designation::class,'user_id');
     }
     public function UserNotification(){
-        return $this->hasMany(Notifications::class,'user_id');
+        return $this->belongsTo(Notifications::class,'user_id');
     }
 }

@@ -16,11 +16,12 @@ class CreateApplyJobsTable extends Migration
         Schema::create('apply_jobs', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
+            $table->boolean('isRead')->default(false);
             $table->foreign('user_id')
                   ->references('id')
                   ->on('users')
                   ->onDelete('cascade');
-                  $table->unsignedBigInteger('job_id');
+            $table->unsignedBigInteger('job_id');
             $table->foreign('job_id')
                   ->references('id')
                   ->on('jobs')

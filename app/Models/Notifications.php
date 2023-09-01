@@ -11,9 +11,18 @@ class Notifications extends Model
     protected $fillable = [
         'title',
         'body',
-        'user_id'
+        'user_id',
+        'job_id'
     ];
+    // public function user(){
+    //     return $this->belongsTo(User::class,'user_id');
+    // }
+
     public function user(){
-        return $this->belongsTo(User::class,'user_id');
+        return $this->hasMany(User::class,'id');
+    }
+
+    public function job(){
+        return $this->belongsTo(Jobs::class,'job_id');
     }
 }
